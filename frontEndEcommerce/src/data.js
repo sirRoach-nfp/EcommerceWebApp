@@ -57,7 +57,7 @@ export const popularProducts = [
 
     {
         id:1,
-        img:"https://images.prestigeonline.com/wp-content/uploads/sites/8/2021/03/18180713/Olivia-von-Halle-Missy-London-silk-cashmere-tracksuit-stripe-grey-SC0001-3-682x1024.jpg"
+        img:"https://cloud.camper.com/is/image/JGVzaG9wMDNtYmlnZ3JleSQ=/KU10019-003_TF.jpg"
     },
 
     {
@@ -68,6 +68,11 @@ export const popularProducts = [
     {
         id:3,
         img:"https://images.prestigeonline.com/wp-content/uploads/sites/8/2021/03/18180713/Olivia-von-Halle-Missy-London-silk-cashmere-tracksuit-stripe-grey-SC0001-3-682x1024.jpg"
+    },
+
+    {
+        id:4,
+        img: "https://shop.bench.com.ph/media/catalog/product/cache/63091c77f1e6f53c92e322242fb44c02/b/g/bga0062kh3_fl_b_za_1.jpg"
     },
 
 ]
