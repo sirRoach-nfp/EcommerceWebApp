@@ -3,6 +3,11 @@ import Navbar from "../components/Navbar"
 import Announcement from "../components/Announcement"
 import Categories from "../components/Categories"
 import Products from "../components/Products"
+import NewsLetter from "../components/NewsLetter"
+import Footer from "../components/Footer"
+
+
+
 export default function Home(){
 
     return(
@@ -13,6 +18,8 @@ export default function Home(){
             <Slider/>
             <Categories/>
             <Products/>
+            <NewsLetter/>
+            <Footer/>
             Home
         </div>
     )

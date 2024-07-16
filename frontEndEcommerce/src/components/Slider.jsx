@@ -4,12 +4,18 @@ import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import { useState } from "react";
 import { sliderItems } from '../data';
 
+import {mobile} from "../responsive"
+
 const Container = styled.div`
     width: 100%;
     height: 100vh;
     display: flex;
     overflow: hidden;
     position: relative;
+
+    ${mobile({
+        display: "none"
+    })}
 `;
 
 const Arrow = styled.div`
