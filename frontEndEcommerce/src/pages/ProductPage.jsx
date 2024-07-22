@@ -5,6 +5,11 @@ import NewsLetter from "../components/NewsLetter"
 import Footer from "../components/Footer"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import { useLocation } from "react-router-dom"
+import { useState,useEffect } from "react"
+import { publicRequest } from "../requestMethod"
+import { addProduct } from "../redux/cartRedux"
+import { useDispatch } from "react-redux"
 const Container = styled.div`
     
 `
@@ -127,6 +132,53 @@ const Button = styled.button`
 
 export default function ProductPage(){
 
+    const location = useLocation();
+    const id = location.pathname.split("/")[2]
+
+    const [product,setProduct] = useState({})
+
+
+   const [color,setColor] = useState("");
+   const [size,setSize] = useState("");
+   const [quantity,setQuantity] = useState(1)
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+
+        const getProduct = async ()=>{
+            try{
+                const res = await publicRequest.get("/product/fetchProduct/"+id);
+                setProduct(res.data)
+                console.log(res.data)
+                
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+        getProduct()
+
+    },[id])
+
+    const handleQuantity = (counter) =>{
+        if(counter === "decrease" ){
+            quantity > 1 && setQuantity(quantity - 1)
+        }
+        else{
+            setQuantity(quantity + 1)
+        }
+    }
+
+    const handleClick = () => {
+
+        dispatch(
+            addProduct({
+                ...product,quantity,color,size
+            })
+        )
+
+    }
+
     return(
 
         <Container>
@@ -139,31 +191,31 @@ export default function ProductPage(){
                 </ImageContainer>
 
                 <InfoContainer>
-                    <Title>test test</Title>
+                    <Title>{product.title}</Title>
 
-                    <Desc>Our eCommerce web app for apparels offers a seamless and intuitive shopping experience. Featuring a sleek design and user-friendly interface, customers can effortlessly browse, search, and purchase the latest fashion trends. With secure payment options, real-time order tracking, and personalized recommendations, our platform ensures satisfaction at every step. Robust backend support guarantees quick load times and reliable service, making online shopping for clothes convenient and enjoyable. Find your perfect style with our extensive collection of apparel.
+                    <Desc>{product.description}
                     </Desc>
 
-                    <Price>$ 20</Price>
+                    <Price>$ {product.price}</Price>
 
                     <FilterContainer>
 
                         <Filter>
                             <FilterTitle>Color</FilterTitle>
-                            <FilterColor color = "black"/>
-                            <FilterColor color = "darkblue"/>
-                            <FilterColor color = "gray"/>
+                            
+                            {product.color?.map(c=>(
+                                <FilterColor color = {c} key={c} onClick={()=> setColor(c)}/>
+                            ))}
                         </Filter>
 
 
                         <Filter>
                             <FilterTitle>Size</FilterTitle>
-                            <FilterSize>
-                                <FilterSizeOption>XS</FilterSizeOption>
-                                <FilterSizeOption>S</FilterSizeOption>
-                                <FilterSizeOption>M</FilterSizeOption>
-                                <FilterSizeOption>L</FilterSizeOption>
-                                <FilterSizeOption>XL</FilterSizeOption>
+                            <FilterSize onChange={(e)=> setSize(e.target.value)}>
+                                
+                                {product.size?.map(s=>(
+                                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                                ))}
 
                             </FilterSize>
                         </Filter>
@@ -174,12 +226,12 @@ export default function ProductPage(){
 
                     <AddContainer>
                         <AmountContainer>
-                            <RemoveOutlinedIcon/>
-                            <Amount>1</Amount>
-                            <AddOutlinedIcon/>
+                            <RemoveOutlinedIcon onClick={()=> handleQuantity("decrease")}/>
+                            <Amount>{quantity}</Amount>
+                            <AddOutlinedIcon onClick={()=> handleQuantity("increase")}/>
                         </AmountContainer>
 
-                        <Button>Add to cart</Button>
+                        <Button onClick={handleClick}>Add to cart</Button>
                     </AddContainer>
 
                 </InfoContainer>

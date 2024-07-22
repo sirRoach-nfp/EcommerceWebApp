@@ -15,7 +15,7 @@ const productRoute = require("./routes/product")
 const orderRoute = require("./routes/order")
 
 
-app.use(cors);
+app.use(cors());
 
 app.use(express.json());
 app.use("/api/user",userRoute);

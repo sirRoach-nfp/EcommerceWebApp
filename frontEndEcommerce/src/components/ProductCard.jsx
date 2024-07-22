@@ -4,7 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
-
+import{BrowserRouter as Router,Routes,Route,Navigate,Link} from "react-router-dom"
 
 
 const Info = styled.div`
@@ -100,7 +100,10 @@ export default function ProductCard({item}){
                 </Icon>
 
                 <Icon>
-                    <SearchOutlinedIcon/>
+                    <Link to={`/product/${item._id}`}>
+                        <SearchOutlinedIcon/>
+                    </Link> 
+                   
                 </Icon>
 
                 <Icon>

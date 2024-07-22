@@ -74,6 +74,7 @@ router.get("/fetchProducts", async(req,res)=>{
 
     const qNew = req.query.new;
     const qCategory = req.query.category;
+    console.log(qCategory);
 
     try{
         let products;
@@ -81,7 +82,7 @@ router.get("/fetchProducts", async(req,res)=>{
         if(qNew){
             products = await Product.find().sort({createdAt: -1}).limit(5)
         }else if (qCategory){
-            products = await Product.find({categories:{
+            products = await Product.find({category:{
                 $in: [qCategory],
             }});
         }else{

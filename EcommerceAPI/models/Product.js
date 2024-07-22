@@ -30,12 +30,12 @@ const productSchema = new mongoose.Schema(
 
 
         size:{
-            type: String,
+            type: Array,
             
         },
 
         color:{
-            type: String,
+            type: Array,
             
         },
 
@@ -44,6 +44,11 @@ const productSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+
+        inStock:{
+            type:Boolean,
+            default: true
+        }
    
         
 
