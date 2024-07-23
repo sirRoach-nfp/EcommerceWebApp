@@ -7,6 +7,8 @@ import Register from "./pages/Register"
 import Cart from "./pages/Cart"
 import { useContext } from "react"
 import{BrowserRouter as Router,Routes,Route,Navigate} from "react-router-dom"
+import Success from "./pages/Success"
+
 
 export default function App(){
   
@@ -26,7 +28,7 @@ export default function App(){
           <Route path="/cart" element={<Cart/>}/>
 
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} /> 
-          
+          <Route path="/success" element={<Success/>}/>
            
      
 

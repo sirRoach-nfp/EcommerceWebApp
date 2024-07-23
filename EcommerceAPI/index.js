@@ -13,7 +13,7 @@ const userRoute = require("./routes/users")
 const authRoute = require("./routes/auth")
 const productRoute = require("./routes/product")
 const orderRoute = require("./routes/order")
-
+const checkoutRout = require("./routes/Stripe")
 
 app.use(cors());
 
@@ -22,7 +22,7 @@ app.use("/api/user",userRoute);
 app.use("/api/auth",authRoute)
 app.use("/api/product", productRoute)
 app.use("/api/order", orderRoute);
-
+app.use("/api/checkout", checkoutRout)
 
 
 mongoose.connect(

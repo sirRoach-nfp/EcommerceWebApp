@@ -6,7 +6,13 @@ import Footer from "../components/Footer";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlined from "@mui/icons-material/AddOutlined";
-
+import { useSelector } from "react-redux";
+import { userRequest } from "../requestMethod";
+import StripeCheckout from "react-stripe-checkout"
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+const KEY = import.meta.env.VITE_STRIPE;
+console.log(KEY)
 const Container = styled.div`
 
 `
@@ -161,7 +167,35 @@ const Button = styled.button`
 `
 
 export default function Cart(){
+    const cart = useSelector(state=>state.cart)
+    const navigate = useNavigate()
+    const [stripeToken,setStripeToken] = useState(null)
 
+    const onToken = (token)=> {
+        setStripeToken(token);
+
+
+    }
+
+    useEffect(()=> {
+        const makeRequest = async ()=>{
+            try{
+                const res = await userRequest.post(`/checkout/payment`,{
+                    tokenId: stripeToken.id,
+                    amount: cart.total * 100,
+                  
+                });
+                navigate("/success",{data:res.data})
+            }catch(err){
+                console.log(err)
+            }
+        }
+       stripeToken && makeRequest();
+    }, [stripeToken,cart.total,navigate])
+
+    console.log(stripeToken)
+
+   
     return(
         <Container>
             <Navbar/>
@@ -186,18 +220,22 @@ export default function Cart(){
 
                         <Info>
 
-                            <Product>
+
+
+
+
+                           {cart.products.map(product=> ( <Product>
 
                                 <ProductDetail>
 
-                                    <Image src="https://pagesix.com/wp-content/uploads/sites/3/2022/01/steve-madden.png"/>
+                                    <Image src={product.img}/>
                                 
                                     <Details>
 
-                                        <ProductName><b>Product:</b> </ProductName>
+                                        <ProductName><b>Product:</b> {product.title}</ProductName>
                                         <ProductId><b>ID:</b> 09110031</ProductId>
-                                        <ProductColor color="black"/>
-                                        <ProductSize><b>Size:</b> 37.5</ProductSize>
+                                        <ProductColor color={product.color}/>
+                                        <ProductSize><b>Size:</b> {product.size}</ProductSize>
 
                                     </Details>
 
@@ -208,16 +246,20 @@ export default function Cart(){
                                     <ProductAmountContainer>
 
                                             <AddOutlinedIcon/>
-                                            <ProductAmount>2</ProductAmount>
+                                            <ProductAmount>{product.quantity}</ProductAmount>
                                             <RemoveOutlinedIcon/>
 
                                     </ProductAmountContainer>
 
-                                    <ProductPrice>$ 30</ProductPrice>
+                                    <ProductPrice>$ {product.price*product.quantity}</ProductPrice>
                                     
                                 </PriceDetail>
 
                             </Product>
+
+                        ))}
+
+
 
 
                         </Info>
@@ -225,7 +267,7 @@ export default function Cart(){
                             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
                                 <Summaryitem>
                                     <SummaryItemText>Subtotal</SummaryItemText>
-                                    <SummaryItemPrice>$ 80</SummaryItemPrice>
+                                    <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                                 </Summaryitem>
 
                                 <Summaryitem>
@@ -240,10 +282,22 @@ export default function Cart(){
                                 
                                 <Summaryitem type="total">
                                     <SummaryItemText >Total</SummaryItemText>
-                                    <SummaryItemPrice>$ 80</SummaryItemPrice>
+                                    <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                                 </Summaryitem>
 
-                            <Button>CHECKOUT NOW</Button>
+                            <StripeCheckout
+                                name="Manta Shop"
+                                billingAddress
+                                shippingAddress
+                                description={`Your total is $${cart.total}`}
+                                amount={cart.total * 100}
+                                token={onToken}
+                                stripeKey={KEY}
+
+                            >
+                                <Button>CHECKOUT NOW</Button>
+
+                            </StripeCheckout>
 
 
                         </Summary>
