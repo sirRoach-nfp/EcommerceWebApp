@@ -1,0 +1,75 @@
+.new{
+    width: 100%;
+    display: flex;
+
+    .newContainer{
+        flex: 6;
+        border: 1px green;
+
+        .top,.bottom{
+            border: 1px  red;
+            padding: 10px;
+            margin: 20px;
+            display: flex;
+
+            h1{
+                color: #555;
+                font-size: 20px;
+            }
+
+            .left{
+                flex: 1;
+                border: 1px red;
+                text-align: center;
+                img{
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+            }
+
+            .right{
+                flex: 2;
+                border: 1px  red;
+
+                form{
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-around;
+
+                    gap: 20px;
+
+                    .formInput{
+                        width: 40%;
+                        label{
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                        }
+
+                        input{
+                            width: 100%;
+                            padding: 5px;
+                            border: none;
+                            border-bottom: 1px solid gray;
+                        }
+                    }
+
+                    button{
+                        width: 150px;
+                        padding: 10px;
+                        border: none;
+                        background-color: teal;
+                        color: white;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+
+        
+    }
+}
