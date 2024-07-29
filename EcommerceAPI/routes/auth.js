@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const User = require("../models/User");
+const Cart = require("../models/Cart")
 const CryptoJS = require("crypto-js")
 const jwt = require("jsonwebtoken")
 
@@ -12,16 +13,27 @@ router.post("/register",async (req,res)=>{
 
     const newUser = new User({
         username: req.body.username,
+        name: req.body.name,
+        lastname: req.body.lastname,
         email: req.body.email,
         password: CryptoJS.AES.encrypt(req.body.password,process.env.PASS_SEC).toString(),
         
     });
+
+
 
     
 
     try{
         const savedUser = await newUser.save();
         res.status(200).json(savedUser);
+
+        const newCart = new Cart({
+            userId: savedUser._id,
+            product:[],
+        })
+
+        await newCart.save();
     }catch(err){res.status(500).json(err)}
 
 

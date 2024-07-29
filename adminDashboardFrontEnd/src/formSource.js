@@ -80,5 +80,13 @@ export const productInputs = [
         type: "text",
         placeholder: "in stock",
         name: "inStock"
-    }
+    },
+    {
+        id: 6,
+        label: "Sizes",
+        type: "text",
+        placeholder: "XS,S,M,L,XL",
+        name: "size"
+    },
+    { id: 7, label: "Color", type: "color", placeholder: "Product Color", name: "color" }
 ];

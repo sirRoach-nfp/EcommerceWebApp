@@ -75,7 +75,8 @@ const Error = styled.span`
 
 `
 export default function Login(){
-
+    const token = useSelector((state) => state.user.currentUser?.accessToken || false);
+    //const token = useSelector((state) => state.user.currentUser.accessToken)
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
     const dispatch = useDispatch()
@@ -84,6 +85,8 @@ export default function Login(){
     const handleLogin = (e)=>{
         e.preventDefault();
         login(dispatch,{username,password})
+        
+   
     }
 
 

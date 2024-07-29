@@ -4,7 +4,7 @@ import Announcement from "../components/Announcement"
 import Products from "../components/Products"
 import NewsLetter from "../components/NewsLetter"
 import Footer from "../components/Footer"
-import { useLocation } from "react-router-dom"
+import { useLocation,useParams } from "react-router-dom"
 
 import { useState } from "react"
 
@@ -45,7 +45,15 @@ const Option = styled.option`
 export default function ProductList(){
 
     const location = useLocation();
-    const cat = location.pathname.split("/")[2]
+
+    //pointer
+    const pointer = location.pathname.split("/")[2];
+    console.log(pointer);
+
+
+    const cat = location.pathname.split("/")[3]
+
+    const {searchValue} = useParams();
 
     const [filters,setFilters] = useState({})
     const [sort,setSort] = useState("newest")
@@ -108,7 +116,7 @@ export default function ProductList(){
                 </Filter>
 
             </FilterContainer>
-                <Products cat={cat} filters={filters} sort= {sort}/>
+                <Products cat={cat} filters={filters} sort= {sort} searchValue={searchValue} pointer={pointer}/>
             <NewsLetter/>
             <Footer/>
             

@@ -11,6 +11,7 @@ const { verifyTokenAndAdmin } = require("./verifyToken");
 router.post("/addProduct", verifyTokenAndAdmin ,async (req,res)=>{
 
     const newProduct = new Product(req.body)
+    console.log(newProduct)
 
 
     try{
@@ -58,12 +59,24 @@ router.delete("/deleteProduct/:id", verifyTokenAndAdmin, async (req,res)=>{
 
 //GET PRODUCT 
 
-router.get("/fetchProduct/:id", async (req,res)=>{
+router.get("/fetchProduct/:searchValue", async (req,res)=>{
 
+    let searchVal = req.params.searchValue
 
     try{
-        const product = await Product.findById(req.params.id)
+        const product = await Product.find({title: new RegExp(searchVal,'i')})
         res.status(200).json(product)
+    }catch(err){
+        res.status(500).json(err)
+    }
+})
+
+router.get("/fetchProduct/specific/:id", async (req,res)=>{
+    let productId = req.params.id
+
+    try{
+        const product = await Product.findById(productId);
+        res.status(200).json(product);
     }catch(err){
         res.status(500).json(err)
     }

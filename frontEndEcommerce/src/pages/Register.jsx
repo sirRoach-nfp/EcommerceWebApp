@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../responsive"
-
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { publicRequest } from "../requestMethod";
 const Container = styled.div`
     width: 100vw;
     height: 100vh;
@@ -56,6 +59,31 @@ const Button = styled.button`
 
 
 export default function Register(){
+
+    const [inputs,setInputs] = useState({})
+
+    const handleInputs = (e) => {
+        setInputs(prev => {
+            return{
+                ...prev, [e.target.name] : e.target.value
+            }
+        })
+    }
+
+    const handleRegister = async (e) =>  {
+        e.preventDefault();
+
+        try{
+            const res = await publicRequest.post("/auth/register",inputs)
+
+            console.log(res.data)
+        }catch(err){ console.log(err)}
+    }
+
+    console.log(inputs)
+
+
+
     return(
         <Container>
 
@@ -65,17 +93,17 @@ export default function Register(){
 
                 <Form>
                     
-                    <Input placeholder="name"/>
-                    <Input placeholder="last name"/>
-                    <Input placeholder="username"/>
-                    <Input placeholder="email"/>
-                    <Input placeholder="password"/>
+                    <Input placeholder="name" name="name" onChange={(e) => handleInputs(e)}/>
+                    <Input placeholder="last name" name="lastname" onChange={(e) => handleInputs(e)}/>
+                    <Input placeholder="username" name="username" onChange={(e) => handleInputs(e)}/>
+                    <Input placeholder="email" name="email" onChange={(e) => handleInputs(e)}/>
+                    <Input placeholder="password" name="password" onChange={(e) => handleInputs(e)}/>
                     <Input placeholder="confirm password"/>
 
                     <Agreement> By creating an account, I consent to the processing of my personal data in accordance with the <b>PRIVACY POLICY</b>
                     </Agreement>
 
-                    <Button>Create</Button>
+                    <Button onClick={handleRegister}>Create</Button>
              
                 </Form>
             </Wrapper>

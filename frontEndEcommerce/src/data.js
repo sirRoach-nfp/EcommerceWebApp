@@ -30,27 +30,52 @@ export const categories = [
 
     {
         id: 1,
-        img: "https://www.brit.co/media-library/light-jackets-for-women-yellow-puffer.png?id=30849946&width=980",
-        title: "LIGHT JACKETS",
-        cat: "women",
+        img: "https://www.gotmes.com/cdn/shop/files/S274d8d6db0b2410f80432b44c494abe1b.jpg?v=1697450869",
+        title: "MEN'S CLOTHING",
+        cat: "men",
 
     },
 
     {
         id: 2,
-        img: "https://static.nike.com/a/images/f_auto/dpr_3.0,cs_srgb/h_484,c_limit/0916c79b-3f18-4281-b6cd-c712d54249ac/how-to-style-a-nike-oversized-t-shirt.jpg",
-        title: "SHIRT STYLE",
+        img: "https://le3no.com/cdn/shop/files/20160630_eee819f6-8966-43ca-8dc0-432a6be7bdcf_460x.jpg?v=1707798899",
+        title: "WOMAN'S CLOTHING",
         cat: "women",
 
     },
 
     {
         id: 3,
-        img: "https://images.prestigeonline.com/wp-content/uploads/sites/8/2021/03/18180713/Olivia-von-Halle-Missy-London-silk-cashmere-tracksuit-stripe-grey-SC0001-3-682x1024.jpg",
-        title: "LOUNGEWEAR",
-        cat: "jeans",
+        img: "https://www.elevation107.com.au/cdn/shop/products/13065106250_4_png.jpg?v=1650614998&width=950",
+        title: "OUTER WEAR",
+        cat: "outerwear",
+
+    },
+    {
+        id: 4,
+        img: "https://images.prom.ua/4253470744_w640_h640_4253470744.jpg",
+        title: "FOOTWEAR",
+        cat: "shoes",
+
+    },
+
+    {
+        id: 5,
+        img: "https://i.pinimg.com/736x/28/42/fe/2842fea54905e9b634f722081486e03d.jpg",
+        title: "ACTIVE WEAR",
+        cat: "activewear",
+
+    },
+
+    {
+        id: 6,
+        img: "https://i.ebayimg.com/images/g/oVoAAOSwQM9kJqYo/s-l1200.webp",
+        title: "ACCESSORIES",
+        cat: "accessories",
 
     }
+
+
 
 
 ]

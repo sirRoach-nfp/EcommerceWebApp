@@ -16,6 +16,8 @@ export default function New({inputs,title}){
     const [addinputs,setInputs] = useState({});
     const [file,setFile] = useState("")
     const [cat,setCat] = useState([])
+    const [size,setSize] = useState([]);
+    console.log(cat)
     
     const dispatch = useDispatch();
 
@@ -61,7 +63,7 @@ export default function New({inputs,title}){
             // Handle successful uploads on complete
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                const product = {...addinputs,img:downloadURL,categories:cat}
+                const product = {...addinputs,img:downloadURL,category:cat,size:size}
                 addProduct(product,dispatch)
             });
         }
@@ -70,6 +72,10 @@ export default function New({inputs,title}){
 
     const handleCat = (e)=>{
         setCat(e.target.value.split(","))
+    }
+
+    const handleSize = (e) => {
+        setSize(e.target.value.split(","))
     }
 
     console.log();
@@ -106,7 +112,8 @@ export default function New({inputs,title}){
 
                                 <div className="formInput" key= {input.id}>
                                     <label>{input.label}</label>
-                                    <input type={input.type} placeholder={input.placeholder} onChange={input.name === "category" ? handleCat : handleChange} name={input.name} />
+                                    <input type={input.type} placeholder={input.placeholder} onChange={input.name === "category" ? handleCat : input.name === "size" ? handleSize : handleChange} name={input.name} />
+                                   
 
                                 </div>
                             ))}

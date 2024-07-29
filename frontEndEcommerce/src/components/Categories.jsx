@@ -11,6 +11,8 @@ const Container = styled.div`
     display: flex;
     padding: 20px;
     justify-content: space-between;
+    flex-wrap: wrap;
+   // border: 1px solid red;
 
     ${mobile({
         padding: "0px",

@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import Badge from '@mui/material/Badge';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { mobile } from '../responsive';
-import { useSelector } from 'react-redux';
-import {Link} from 'react-router-dom'
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import {Link,useNavigate} from 'react-router-dom'
+import { commitLogout } from '../redux/apiCalls';
+import axios from 'axios';
+//import { search } from '../../../EcommerceAPI/routes/product';
 const NavContainer = styled.div`
  height: 60px;
     ${mobile()}
@@ -59,6 +60,8 @@ const Center = styled.div`
 
 const Logo = styled.h1`
     font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
     ${mobile({
         fontSize: "24px"
     })}
@@ -92,9 +95,49 @@ const MenuItem = styled.div`
 `
 
 
+
+//Handlers
+const handleSearch = () => {
+    
+    try{
+
+    }catch(err){
+        console.log(err)
+    }
+}
+
 export default function Navbar(){
-    const quantity = useSelector(state=>state.cart.quantity);
+    const quantity = useSelector(state=>state.cart?.quantity || 0);
+    const userName = useSelector(state=>state.user.currentUser?.username || false)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [searchValue,setSearch] = useState("");
     console.log(quantity)
+
+
+    const handleLogout = ()=>{
+        commitLogout(dispatch);
+
+    }
+
+
+    
+//Handlers
+    const handleSearch = () => {
+        let verifiedSearchVal = searchValue || "all";
+
+
+    
+        navigate(`/products/search/${verifiedSearchVal}`);
+    }
+
+      
+
+
+    const navigateHome = () =>{
+        useNavigate("/")
+    }
+    
     return(
 
         <NavContainer>
@@ -102,21 +145,33 @@ export default function Navbar(){
                 <Left>
                     <Language>En</Language>
                     <SearchContainer>
-                        <Input placeholder='Search'/>
-                        <SearchIcon style={{color: "gray", fontSize:16}}/>
+                        <Input placeholder='Search' onChange={(e)=>setSearch(e.target.value)}/>
+                        <SearchIcon 
+                            style={{color: "gray", fontSize:16, cursor: searchValue ? "pointer" : "not-allowed"}} 
+                            onClick={searchValue ? handleSearch : null}
+                        />
+        
                     </SearchContainer>
                 </Left>
 
 
                 <Center>
-                    <Logo>TEST.</Logo>
+
+                    <Link to="/" style={{textDecoration:"none", color:"black"}}>
+
+                        <Logo>TEST.</Logo>
+                    </Link>
+                    
                 </Center>
 
 
 
-                <Right>
-                        <MenuItem>REGISTER</MenuItem>
-                        <MenuItem>SIGN IN</MenuItem>
+                <Right> 
+                        {!userName && <MenuItem>REGISTER</MenuItem> }
+                        
+                        <MenuItem>{userName ? userName : "SIGNIN"}</MenuItem>
+
+                        {userName && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
 
 
                         <Link to="/cart">

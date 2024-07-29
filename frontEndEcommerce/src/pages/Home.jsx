@@ -5,11 +5,19 @@ import Categories from "../components/Categories"
 import Products from "../components/Products"
 import NewsLetter from "../components/NewsLetter"
 import Footer from "../components/Footer"
-
-
+import { useSelector,useDispatch } from "react-redux"
+import { getUserCart } from "../redux/apiCalls"
 
 export default function Home(){
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state) => state.user.currentUser?.accessToken || false);
+    const uid = useSelector((state) => state.user.currentUser?._id || false);
+    console.log("ACCESS TOKEN " + accessToken);
 
+
+    if(accessToken){
+        getUserCart(dispatch,uid)
+    }
     return(
 
         <div>
@@ -17,7 +25,7 @@ export default function Home(){
             <Navbar/>
             <Slider/>
             <Categories/>
-            <Products/>
+            <Products pointer="category"/>
             <NewsLetter/>
             <Footer/>
             Home

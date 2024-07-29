@@ -6,11 +6,13 @@ import Footer from "../components/Footer";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlined from "@mui/icons-material/AddOutlined";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
 import StripeCheckout from "react-stripe-checkout"
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { deleteProduct } from "../redux/cartRedux"
+import { removeItemFromCart } from "../redux/apiCalls";
 const KEY = import.meta.env.VITE_STRIPE;
 console.log(KEY)
 const Container = styled.div`
@@ -166,8 +168,24 @@ const Button = styled.button`
     font-weight: 600;
 `
 
+
+const removeDiv = styled.div`
+    flex: 1;
+    border: 1px solid red;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+
+
 export default function Cart(){
     const cart = useSelector(state=>state.cart)
+    const user = useSelector(state=> state.user)
+    const dispatch = useDispatch();
+
+
     const navigate = useNavigate()
     const [stripeToken,setStripeToken] = useState(null)
 
@@ -185,7 +203,24 @@ export default function Cart(){
                     amount: cart.total * 100,
                   
                 });
-                navigate("/success",{data:res.data})
+                
+           
+
+                const order = {
+                    userId: user.currentUser._id,
+                    products: cart.products.map(item=>({
+                        productId: item._id,
+                        quantity: item.quantity,
+                    })),
+                    amount:cart.total,
+                    address:"billingAddress",
+                };
+
+
+                 await userRequest.post("/order/createOrder",order);
+
+                 navigate("/success",{data:res.data})
+
             }catch(err){
                 console.log(err)
             }
@@ -194,6 +229,16 @@ export default function Cart(){
     }, [stripeToken,cart.total,navigate])
 
     console.log(stripeToken)
+
+
+    const handleRemove = (id) => {
+        /*
+        dispatch(
+            deleteProduct(id)
+        )*/
+
+            removeItemFromCart(dispatch,user.currentUser._id,id)
+    }
 
    
     return(
@@ -254,6 +299,20 @@ export default function Cart(){
                                     <ProductPrice>$ {product.price*product.quantity}</ProductPrice>
                                     
                                 </PriceDetail>
+
+                                <div className="removeDiv" style={{
+                                    flex:"1",
+                                    border: "1px solid red",
+                                    display: "flex",
+                                    alignItems:"center",
+                                    justifyContent: "center"
+
+
+                                }}>
+                                    <button onClick={() => handleRemove(product._id)}>remove</button>
+                                </div>
+
+         
 
                             </Product>
 

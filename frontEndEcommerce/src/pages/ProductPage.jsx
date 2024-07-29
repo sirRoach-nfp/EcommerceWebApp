@@ -5,11 +5,13 @@ import NewsLetter from "../components/NewsLetter"
 import Footer from "../components/Footer"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { useLocation } from "react-router-dom"
+import { useLocation,useNavigate } from "react-router-dom"
 import { useState,useEffect } from "react"
 import { publicRequest } from "../requestMethod"
 import { addProduct } from "../redux/cartRedux"
-import { useDispatch } from "react-redux"
+import { useDispatch,useSelector } from "react-redux"
+import { addItemToCart } from "../redux/apiCalls"
+
 const Container = styled.div`
     
 `
@@ -29,8 +31,9 @@ const ImageContainer = styled.div`
 
 const Image = styled.img`
     width: 100%;
-    height: 90vh;
+    height: 50vh;
     object-fit: cover;
+    //border: 1px solid red ;
 `
 
 
@@ -131,6 +134,10 @@ const Button = styled.button`
 
 
 export default function ProductPage(){
+    const navigate = useNavigate();
+
+    const uid = useSelector((state)=> state.user.currentUser?._id || false)
+   
 
     const location = useLocation();
     const id = location.pathname.split("/")[2]
@@ -147,7 +154,7 @@ export default function ProductPage(){
 
         const getProduct = async ()=>{
             try{
-                const res = await publicRequest.get("/product/fetchProduct/"+id);
+                const res = await publicRequest.get("/product/fetchProduct/specific/"+id);
                 setProduct(res.data)
                 console.log(res.data)
                 
@@ -170,13 +177,24 @@ export default function ProductPage(){
     }
 
     const handleClick = () => {
+        const item = {
+            ...product,quantity,color,size
+        }
 
+        const userId = uid;
+        /*
         dispatch(
             addProduct({
                 ...product,quantity,color,size
             })
-        )
+        )*/
 
+            addItemToCart(dispatch,userId,item)
+
+    }
+
+    const handleRedirect = () =>{
+        navigate("/login")
     }
 
     return(
@@ -187,7 +205,7 @@ export default function ProductPage(){
 
             <Wrapper>
                 <ImageContainer>
-                    <Image src="https://cloud.camper.com/is/image/JGVzaG9wMDNtYmlnZ3JleSQ=/KU10019-003_TF.jpg"/>
+                    <Image src={product.img}/>
                 </ImageContainer>
 
                 <InfoContainer>
@@ -231,7 +249,7 @@ export default function ProductPage(){
                             <AddOutlinedIcon onClick={()=> handleQuantity("increase")}/>
                         </AmountContainer>
 
-                        <Button onClick={handleClick}>Add to cart</Button>
+                        <Button onClick={uid ? handleClick : handleRedirect }>Add to cart</Button>
                     </AddContainer>
 
                 </InfoContainer>

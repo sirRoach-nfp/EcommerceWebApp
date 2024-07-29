@@ -24,8 +24,8 @@ router.post("/createCart", verifyToken ,async (req,res)=>{
 })
 
 //UPDATE PRODUCT 
-
-router.put("/updateCart/:id", verifyTokenAndAuthorization ,async (req,res)=>{
+/*
+router.put("/updateCart/:id" ,async (req,res)=>{
 
     try{
         const updatedCart = await Cart.findByIdAndUpdate(
@@ -44,7 +44,37 @@ router.put("/updateCart/:id", verifyTokenAndAuthorization ,async (req,res)=>{
     
 
 })
+*/
+router.post("/updateCart/:id" ,async (req,res)=>{
+    console.log(req.body.quantity)
 
+    const productId = req.body._id
+    const quantity = req.body.quantity
+
+    try{
+       
+        const cart = await Cart.findOne({userId: req.params.id})
+        
+        const updatedCart = await Cart.findByIdAndUpdate(
+            cart._id,
+            {
+                $push: {
+                  products: {
+                    productId: productId,
+                    quantity: quantity,
+                  },
+                },
+              },
+              { new: true }
+        );
+        
+        res.status(200).json(updatedCart);
+    }catch(err){
+        res.status(500).json(err)
+    }
+    
+
+})
 
 //DELETE 
 router.delete("/deleteCart/:id", verifyTokenAndAuthorization, async (req,res)=>{
@@ -57,10 +87,30 @@ router.delete("/deleteCart/:id", verifyTokenAndAuthorization, async (req,res)=>{
 })
 
 
+//DELETE product from cart 
+router.delete("/remove/:uid/:puid", async (req,res)=>{
+    const prodId = req.params.puid;
+    const uid = req.params.uid
+    try{
+        const cart = await Cart.findOne({userId: uid})
+
+        const updatedCart = await Cart.findByIdAndUpdate(cart._id,{
+            $pull: { products: { _id: prodId } },
+          },
+          { new: true });
+
+        res.status(200).json(updatedCart)
+    }catch(err){
+        res.status(500).json(err);
+    }
+})
+
+
 //GET USER CART 
 
 router.get("/fetchCart/:id", verifyTokenAndAuthorization, async (req,res)=>{
-
+    console.log(req.headers.token)
+   
 
     try{
         const cart = await Cart.findOne({userId: req.params.id})
@@ -69,6 +119,9 @@ router.get("/fetchCart/:id", verifyTokenAndAuthorization, async (req,res)=>{
         res.status(500).json(err)
     }
 })
+
+
+
 
 //GET ALL
 router.get("/",verifyTokenAndAdmin, async(req,res)=>{

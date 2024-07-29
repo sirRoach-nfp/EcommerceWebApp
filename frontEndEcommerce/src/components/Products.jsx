@@ -14,24 +14,57 @@ const Container = styled.div`
 
 
 
-export default function Products({cat,filters,sort}){
+export default function Products({cat,filters,sort,searchValue,pointer}){
 
     const [products,setProduct] = useState([]);
     const [filteredProducts,setFilteredProduct] = useState([]);
 
-    useEffect(()=> {
-        const getProducts = async ()=>{
-            try{
-                const res = await axios.get(cat ? `http://localhost:5000/api/product/fetchProducts?category=${cat}`: `http://localhost:5000/api/product/fetchProducts`)
-                console.log(res.data)
-                setProduct(res.data)
-            }catch(err){
-                console.log(err)
-            }
-        }
 
-        getProducts();
-    },[])
+    if(searchValue === ""){
+        
+    }
+
+    console.log(pointer)
+
+    const getProducts = async ()=>{
+        try{
+            const res = await axios.get(cat ? `http://localhost:5000/api/product/fetchProducts?category=${cat}`: `http://localhost:5000/api/product/fetchProducts`)
+            console.log(res.data)
+            setProduct(res.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+
+    const reFetch = async ()=>{
+        try{
+            if(searchValue === "all"){
+                const res = await axios.get(`http://localhost:5000/api/product/fetchProducts`)
+                setProduct(res.data)
+
+            }
+            const res = await axios.get(`http://localhost:5000/api/product/fetchProduct/${searchValue}`)
+            setProduct(res.data)
+        }catch(err){
+            console.log(err)
+
+        }
+    }
+
+
+
+    useEffect(()=>{
+
+            if (pointer === "category") {
+                getProducts();
+            } else if (pointer === "search") {
+                reFetch();
+            }
+      
+    }, [pointer, searchValue, cat]);
+    
+
 
 
     useEffect(()=> {
@@ -44,6 +77,8 @@ export default function Products({cat,filters,sort}){
 
 
     },[cat,filters,products])
+
+
 
     useEffect(()=> {
         if(sort === "newest"){

@@ -9,9 +9,16 @@ import { Link } from "react-router-dom"
 const Container = styled.div`
     
     flex: 1;
+    min-width: 300px;
     margin: 3px;
     height: 60vh;
     position: relative;
+    transition: all .5s ease-in-out;
+    &:hover{
+        filter: brightness(0.7);
+       
+    }
+
 
 `
 
@@ -23,6 +30,8 @@ const Image = styled.img`
     ${mobile({
         height: "20vh",
     })}
+
+
 `
 
 const Info = styled.div`
@@ -61,7 +70,7 @@ export default function CategoryItem({item}){
 
         <Container>
 
-                <Link to={`/products/${item.cat}`}>
+                <Link to={`/products/category/${item.cat}`}>
                     <Image src={item.img}/>
                     <Info>
                         <Title>{item.title}</Title>

@@ -18,9 +18,9 @@ router.post("/createOrder", verifyToken ,async (req,res)=>{
     try{
         const savedOrder = await newOrder.save();
 
-        res.status(200).json(savedOrder);
+       res.status(200).json(savedOrder);
     }catch(err){
-        res.status(500).json(err)
+       res.status(500).json(err)
     }
 })
 
@@ -29,6 +29,7 @@ router.post("/createOrder", verifyToken ,async (req,res)=>{
 router.put("/updateOrder/:id", verifyTokenAndAdmin ,async (req,res)=>{
 
     try{
+        console.log('Attempting to save order:', req.body);
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
 
