@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlined from "@mui/icons-material/AddOutlined";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
 import StripeCheckout from "react-stripe-checkout"
@@ -13,6 +14,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { deleteProduct } from "../redux/cartRedux"
 import { removeItemFromCart } from "../redux/apiCalls";
+import useWindowWidth from "../useWindowWidth";
+import { mobile,mobileM,tablet } from "../responsive";
 const KEY = import.meta.env.VITE_STRIPE;
 console.log(KEY)
 const Container = styled.div`
@@ -37,6 +40,15 @@ const Top = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 20px;
+    ${mobile({
+        padding: "0",
+        alignItems:"center",
+    })}
+
+    ${mobileM({
+        padding: "0",
+        alignItems:"center",
+    })}
     
     
 `
@@ -48,9 +60,32 @@ const TopButton = styled.button`
     border: ${props => props.type === "filled" && "none"};
     background-color: ${props => props.type === "filled" ? "black" : "transparent"};
     color: ${props => props.type === "filled" && "white"};
+
+    ${mobile({
+        display: "none",
+    })}
+
+    ${mobileM({
+        display: "none",
+    })}
 `
 
 const TopTexts = styled.div`
+    ${mobile({
+        marginTop:"5px",
+        width:"100%",
+        display: "flex",
+        alignItems:"center",
+        justifyContent:"center",
+    })}
+
+    ${mobileM({
+        marginTop:"5px",
+        width:"100%",
+        display: "flex",
+        alignItems:"center",
+        justifyContent:"center",
+    })}
 
 `
 
@@ -64,10 +99,32 @@ const TopText = styled.span`
 const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
+
+    ${mobile({
+      
+        flexDirection:"column",
+    })}
+
+    ${mobileM({
+      
+        flexDirection:"column",
+    })}
+
+    ${tablet({
+       
+        flexDirection:"column",
+    })}
 `
 
 const Info = styled.div`
     flex: 3;
+
+    ${mobile({
+       
+    })}
+    ${mobileM({
+       
+    })}
 `
 
 
@@ -75,12 +132,27 @@ const Info = styled.div`
 const Product = styled.div`
     display: flex;
     justify-content: space-between;
+
+    ${mobile({
+        //flexDirection: "column",
+    })}
 `
 
 
 const ProductDetail = styled.div`
     flex: 2;
     display: flex;
+
+    ${mobile({
+    
+        flexDirection:"column",
+    })}
+
+    
+    ${mobileM({
+      
+        flexDirection:"column",
+    })}
 `
 
 const Image = styled.img`
@@ -117,6 +189,17 @@ const PriceDetail = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    ${mobile({
+    
+        alignItems:"center",
+        justifyContent:"center"
+    })}
+
+    ${mobileM({
+
+        alignItems:"center",
+        justifyContent:"center"
+    })}
 `
 
 
@@ -124,6 +207,15 @@ const ProductAmountContainer = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    ${mobile({
+        marginBottom:"20px",
+       // marginRight:"20px",
+    })}
+
+    ${mobileM({
+        marginBottom:"20px",
+       // marginRight:"20px",
+    })}
 `
 
 const ProductAmount = styled.div`
@@ -166,6 +258,9 @@ const Button = styled.button`
     padding: 10px;
     color: white;
     font-weight: 600;
+    cursor: ${props => props.isDisabled ? 'not-allowed' : 'pointer'};
+    opacity: ${props => props.isDisabled ? 0.5 : 1};
+
 `
 
 
@@ -184,6 +279,9 @@ export default function Cart(){
     const cart = useSelector(state=>state.cart)
     const user = useSelector(state=> state.user)
     const dispatch = useDispatch();
+
+    const windowWidth = useWindowWidth();
+    const isMobile  = windowWidth < 600;
 
 
     const navigate = useNavigate()
@@ -254,7 +352,7 @@ export default function Cart(){
                     <TopButton>CONTINUE SHOPPING</TopButton>
 
                     <TopTexts>
-                        <TopText>Shopping Bag(2)</TopText>
+                        <TopText>Shopping Bag({cart.quantity})</TopText>
                         <TopText>Your Wishlist (0)</TopText>
                     </TopTexts>
 
@@ -278,7 +376,7 @@ export default function Cart(){
                                     <Details>
 
                                         <ProductName><b>Product:</b> {product.title}</ProductName>
-                                        <ProductId><b>ID:</b> 09110031</ProductId>
+                                        <ProductId><b>ID:</b> {product.productId}</ProductId>
                                         <ProductColor color={product.color}/>
                                         <ProductSize><b>Size:</b> {product.size}</ProductSize>
 
@@ -297,20 +395,24 @@ export default function Cart(){
                                     </ProductAmountContainer>
 
                                     <ProductPrice>$ {product.price*product.quantity}</ProductPrice>
+
+
+                                    <div className="removeDiv" style={{
+                                        
+                                    
+                                        display: "flex",
+                                        alignItems:"center",
+                                        justifyContent: "center",
+                                        marginTop:"20px"
+
+
+                                    }}>
+                                        <DeleteOutlineOutlinedIcon onClick={() => handleRemove(product._id)} style={{color:"red",fontSize:"35px",cursor:"pointer"}}/>
+                                    </div>
                                     
                                 </PriceDetail>
 
-                                <div className="removeDiv" style={{
-                                    flex:"1",
-                                    border: "1px solid red",
-                                    display: "flex",
-                                    alignItems:"center",
-                                    justifyContent: "center"
 
-
-                                }}>
-                                    <button onClick={() => handleRemove(product._id)}>remove</button>
-                                </div>
 
          
 
@@ -331,12 +433,12 @@ export default function Cart(){
 
                                 <Summaryitem>
                                     <SummaryItemText>Estimated Shipping</SummaryItemText>
-                                    <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+                                    <SummaryItemPrice>$ NaN</SummaryItemPrice>
                                 </Summaryitem>
 
                                 <Summaryitem>
                                     <SummaryItemText>Shipping Discount</SummaryItemText>
-                                    <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+                                    <SummaryItemPrice>$00</SummaryItemPrice>
                                 </Summaryitem>
                                 
                                 <Summaryitem type="total">
@@ -344,19 +446,23 @@ export default function Cart(){
                                     <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
                                 </Summaryitem>
 
-                            <StripeCheckout
-                                name="Manta Shop"
-                                billingAddress
-                                shippingAddress
-                                description={`Your total is $${cart.total}`}
-                                amount={cart.total * 100}
-                                token={onToken}
-                                stripeKey={KEY}
 
-                            >
-                                <Button>CHECKOUT NOW</Button>
+                            {cart.quantity <= 0 ? null : (
+                                                        <StripeCheckout
+                                                            name="Manta Shop"
+                                                            billingAddress
+                                                            shippingAddress
+                                                            description={`Your total is $${cart.total}`}
+                                                            amount={cart.total * 100}
+                                                            token={onToken}
+                                                            stripeKey={KEY}
+                            
+                                                        >
+                                                            <Button isDisabled={cart.quantity < 0} disabled={cart.quantity < 0}>CHECKOUT NOW</Button>
+                            
+                                                        </StripeCheckout>
+                            )}
 
-                            </StripeCheckout>
 
 
                         </Summary>

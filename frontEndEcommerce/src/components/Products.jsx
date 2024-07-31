@@ -4,12 +4,23 @@ import ProductCard from "./ProductCard"
 import { popularProducts } from "../data"
 import { useState,useEffect } from "react"
 import axios from "axios"
-
+import { mobile, mobileM } from '../responsive';
 
 const Container = styled.div`
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
+
+    ${mobile({
+    display:"flex",
+    justifyContent: "center",
+    })}
+
+    ${mobileM({
+        display:"flex",
+        justifyContent: "center",
+       // border:"1px solid red"
+    })}
 `
 
 
@@ -100,11 +111,17 @@ export default function Products({cat,filters,sort,searchValue,pointer}){
 
     return(
         <Container>
-            {cat ? filteredProducts.map(item => (
+
+            {products <= 0 ? <h1 >No Result for "{searchValue}"</h1> : (
+            cat ? filteredProducts.map(item => (
                 <ProductCard item={item} key={item.id}/>
             )) : products.slice(0,8).map(item => (
                 <ProductCard item={item} key={item.id}/>
-            ))}
+            )))}
+
+            
+
+
         </Container>
     )
 }

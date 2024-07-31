@@ -1,15 +1,18 @@
 import styled from "styled-components";
-import { mobile } from "../responsive"
+import { mobile,mobileM,tablet,desktopS,desktopL } from "../responsive"
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { publicRequest } from "../requestMethod";
+import HomeIcon from '@mui/icons-material/Home';
 const Container = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: teal;
 `
 
 
@@ -17,9 +20,22 @@ const Wrapper = styled.div`
     width: 40% ;
     padding: 20px;
     background-color: white;
-    border: 1px solid red;
+    //border: 1px solid red;
     ${mobile({
         width: "80%"
+    })}
+
+    ${mobileM({
+        width: "80%"
+    })}
+
+    ${tablet({
+        width: "80%"
+    })}
+
+
+    ${desktopS({
+        width: "70%"
     })}
 `
 
@@ -55,11 +71,18 @@ const Button = styled.button`
     background-color: teal;
     cursor: pointer;
     color: white;
+    margin-bottom: 10px;
+`
+const Link = styled.a`
+    margin-top: 20px;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+
 `
 
-
 export default function Register(){
-
+    const navigate = useNavigate();
     const [inputs,setInputs] = useState({})
 
     const handleInputs = (e) => {
@@ -80,13 +103,23 @@ export default function Register(){
         }catch(err){ console.log(err)}
     }
 
-    console.log(inputs)
+    //console.log(inputs)
+
+    const handleNavigate = () => {
+        navigate("/login")
+    }
+
+    const navigateHome = () => {
+        navigate("/")
+    }
+
+
 
 
 
     return(
         <Container>
-
+            <HomeIcon style={{color:"white", fontSize:"30px",marginBottom:"10px", cursor:"pointer"}} onClick={navigateHome}/>
             <Wrapper>
 
                 <Title>CREATE AN ACCOUNT</Title>
@@ -104,8 +137,10 @@ export default function Register(){
                     </Agreement>
 
                     <Button onClick={handleRegister}>Create</Button>
+                  
              
                 </Form>
+                <Link onClick={handleNavigate}>Already have an account?</Link>
             </Wrapper>
         </Container>
     )

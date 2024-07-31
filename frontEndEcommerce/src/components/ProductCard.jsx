@@ -5,7 +5,9 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 import{BrowserRouter as Router,Routes,Route,Navigate,Link} from "react-router-dom"
-
+import { mobile, mobileM } from '../responsive';
+import { height } from "@mui/system";
+import useWindowWidth from "../useWindowWidth";
 
 const Info = styled.div`
     opacity: 0;
@@ -40,6 +42,15 @@ const Container = styled.div`
     &:hover ${Info}{
         opacity: 1;
     }
+    ${mobile({
+
+
+    })}
+
+    ${mobileM({
+       // border:"1px solid green",
+        
+    })}
 `
 
 
@@ -49,6 +60,11 @@ const Circle = styled.div`
     border-radius: 50%;
     background-color: white;
     position: absolute;
+
+    ${mobile({
+        width: 0,
+        height: 0,
+    })}
 `
 
 
@@ -80,6 +96,10 @@ const Icon = styled.div`
         transform: scale(1.1);
 
     }
+
+    ${mobile({
+        border:"1px solid red",
+    })}
 `
 
 
@@ -87,32 +107,65 @@ const Icon = styled.div`
 
 export default function ProductCard({item}){
 
+    const windowWidth = useWindowWidth();
+    const isMobile  = windowWidth <= 640;
+
 
     return(
-        <Container>
-            <Circle/>
-            <Image src={item.img} />
 
-            <Info>
+        <>
+        {isMobile ? (
+            <Link  to={`/product/${item._id}`}>
+                <Container>
+                    <Circle/>
+                    <Image src={item.img} />
 
-                <Icon>
-                    <ShoppingCartOutlinedIcon/>
-                </Icon>
+                    <Info>
 
-                <Icon>
-                    <Link to={`/product/${item._id}`}>
-                        <SearchOutlinedIcon/>
-                    </Link> 
-                   
-                </Icon>
+                        <Icon>
+                            <ShoppingCartOutlinedIcon/>
+                        </Icon>
 
-                <Icon>
-                    <FavoriteBorderOutlinedIcon/>
-                </Icon>
+  
+
+                        <Icon>
+                            <FavoriteBorderOutlinedIcon/>
+                        </Icon>
 
 
-            </Info>
+                    </Info>
 
-        </Container>
+                </Container>
+
+            </Link>
+        ): (
+            <Container>
+                <Circle/>
+                <Image src={item.img} />
+
+                <Info>
+
+                    <Icon>
+                        <ShoppingCartOutlinedIcon/>
+                    </Icon>
+
+                    <Icon>
+                        <Link to={`/product/${item._id}`}>
+                            <SearchOutlinedIcon/>
+                        </Link> 
+                    
+                    </Icon>
+
+                    <Icon>
+                        <FavoriteBorderOutlinedIcon/>
+                    </Icon>
+
+
+                </Info>
+
+            </Container>
+        )}
+        
+        </>
     )
 }

@@ -5,7 +5,7 @@ import Products from "../components/Products"
 import NewsLetter from "../components/NewsLetter"
 import Footer from "../components/Footer"
 import { useLocation,useParams } from "react-router-dom"
-
+import { mobile,mobileM } from '../responsive';
 import { useState } from "react"
 
 const Container = styled.div`
@@ -19,10 +19,20 @@ margin: 20px;
 const FilterContainer = styled.div`
     display: flex;
     justify-content: space-between;
+
+    ${mobileM({
+
+    })}
+
+
     
 `
 
 const Filter= styled.div`
+
+${mobileM({
+    
+    })}
     
 `
 
@@ -31,11 +41,31 @@ const FilterText = styled.span`
     font-weight: 600;
     margin-right: 20px;
     margin-left: 20px;
+
+    ${mobile({
+    
+        marginRight:"0px",
+        marginLeft:"0px",
+    })}
 `
 
 const Select = styled.select`
     padding: 10px;
     margin-right: 20px;
+    
+    ${mobileM({
+ 
+        marginRight:"0px",
+        marginLeft:"0px",
+    })}
+
+
+    ${mobile({
+    
+        marginRight:"0px",
+        marginLeft:"0px",
+        padding:"2px"
+    })}
 `
 
 const Option = styled.option`
@@ -81,15 +111,7 @@ export default function ProductList(){
                 <Filter>
                     
                     <FilterText>Filter Products:</FilterText>
-                    <Select name = "color" onChange={handleFilters}>
-                        <Option disabled >Color</Option>
-                        <Option>white</Option>
-                        <Option>black</Option>
-                        <Option>red</Option>
-                        <Option>blue</Option>
-                        <Option>yellow</Option>
-                        <Option>gray</Option>
-                    </Select>
+
 
                     <Select name="size" onChange={handleFilters}>
                         <Option disabled >Size</Option>

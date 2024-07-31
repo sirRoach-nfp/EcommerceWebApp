@@ -1,15 +1,20 @@
 import styled from "styled-components";
-import { mobile } from "../responsive"
+import { mobile,mobileM,tablet,desktopS,desktopL } from "../responsive"
 import { useState } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from 'react-router-dom'
+import HomeIcon from '@mui/icons-material/Home';
+
 
 const Container = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: teal;
 `
 
 
@@ -17,10 +22,22 @@ const Wrapper = styled.div`
     width: 25% ;
     padding: 20px;
     background-color: white;
-    border: 1px solid red;
-    ${mobile({
-        width: "80%"
-    })}
+   // border: 1px solid red;
+   ${mobile({
+    width: "80%",
+  })}
+  ${mobileM({
+    width: "70%",
+  })}
+  ${tablet({
+    width: "80%",
+  
+  })}
+  ${desktopS({
+    width: "40%",
+  })}
+
+
 `
 
 
@@ -75,6 +92,7 @@ const Error = styled.span`
 
 `
 export default function Login(){
+    const navigate = useNavigate();
     const token = useSelector((state) => state.user.currentUser?.accessToken || false);
     //const token = useSelector((state) => state.user.currentUser.accessToken)
     const [username,setUsername] = useState("");
@@ -89,12 +107,21 @@ export default function Login(){
    
     }
 
+    const handleNavigate = (e) => {
+        e.preventDefault();
+        navigate("/register")
+    }
 
 
+    const navigateHome = () => {
+        navigate("/")
+    }
 
     return(
         <Container>
 
+                <HomeIcon style={{color:"white", fontSize:"30px",marginBottom:"10px", cursor:"pointer"}} onClick={navigateHome}/>
+        
             <Wrapper>
 
                 <Title>SIGN IN</Title>
@@ -113,7 +140,7 @@ export default function Login(){
 
 
                     <Link>FORGOT PASSWORD?</Link>
-                    <Link>CREATE A NEW ACCOUNT</Link>
+                    <Link onClick={handleNavigate}>CREATE A NEW ACCOUNT</Link>
              
                 </Form>
             </Wrapper>

@@ -46,10 +46,13 @@ router.put("/updateCart/:id" ,async (req,res)=>{
 })
 */
 router.post("/updateCart/:id" ,async (req,res)=>{
-    console.log(req.body.quantity)
+    console.log(req.body)
 
     const productId = req.body._id
     const quantity = req.body.quantity
+    const img = req.body.img
+    const price = req.body.price
+    const title = req.body.title
 
     try{
        
@@ -62,6 +65,9 @@ router.post("/updateCart/:id" ,async (req,res)=>{
                   products: {
                     productId: productId,
                     quantity: quantity,
+                    img:img,
+                    title:title,
+                    price:price,
                   },
                 },
               },

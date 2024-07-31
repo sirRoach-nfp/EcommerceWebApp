@@ -7,6 +7,7 @@ export const getUserCart = async (dispatch,userId)=>{
 
     try{
         const res = await userRequest.get(`/cart/fetchCart/${userId}`);
+        console.log(res.data)
         dispatch(fetchUserCart(res.data))
 
 

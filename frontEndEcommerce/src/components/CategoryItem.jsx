@@ -3,7 +3,7 @@
 import styled from "styled-components"
 import { categories } from "../data"
 
-import { mobile } from "../responsive"
+import { mobile,mobileM } from "../responsive"
 import { Link } from "react-router-dom"
 
 const Container = styled.div`
@@ -29,6 +29,10 @@ const Image = styled.img`
 
     ${mobile({
         height: "20vh",
+    })}
+
+    ${mobileM({
+        height: "30vh",
     })}
 
 

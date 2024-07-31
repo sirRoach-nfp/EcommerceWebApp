@@ -7,7 +7,7 @@ import MapIcon from '@mui/icons-material/Map';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-import { mobile } from "../responsive"
+import { mobile,mobileM,tablet,desktopS } from "../responsive"
 
 const Container = styled.div`
     display: flex;
@@ -56,7 +56,18 @@ const SocialIcon = styled.div`
 const Center = styled.div`
     flex: 1;
     padding: 20px;
+
     ${mobile({
+        display: "none"
+    })}
+
+    ${mobileM({
+        display: "none"
+    })}
+    ${tablet({
+        display: "none"
+    })}
+    ${desktopS({
         display: "none"
     })}
 `   

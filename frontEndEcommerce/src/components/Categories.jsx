@@ -5,7 +5,7 @@ import { categories} from "../data"
 
 import CategoryItem from "./CategoryItem"
 
-import { mobile } from "../responsive"
+import { mobile,mobileM } from "../responsive"
 
 const Container = styled.div`
     display: flex;
@@ -15,6 +15,11 @@ const Container = styled.div`
    // border: 1px solid red;
 
     ${mobile({
+        padding: "0px",
+        flexDirection: "column"
+    })}
+
+    ${mobileM({
         padding: "0px",
         flexDirection: "column"
     })}
