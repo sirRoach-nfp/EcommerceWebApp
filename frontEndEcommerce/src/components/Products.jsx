@@ -40,7 +40,7 @@ export default function Products({cat,filters,sort,searchValue,pointer}){
 
     const getProducts = async ()=>{
         try{
-            const res = await axios.get(cat ? `${publicRequest}/product/fetchProducts?category=${cat}`: `${publicRequest}/product/fetchProducts`)
+            const res = await publicRequest.get(cat ? `/product/fetchProducts?category=${cat}`: `/product/fetchProducts`)
             console.log(res.data)
             setProduct(res.data)
         }catch(err){
@@ -52,11 +52,11 @@ export default function Products({cat,filters,sort,searchValue,pointer}){
     const reFetch = async ()=>{
         try{
             if(searchValue === "all"){
-                const res = await axios.get(`${publicRequest}/product/fetchProducts`)
+                const res = await publicRequest.get(`/product/fetchProducts`)
                 setProduct(res.data)
 
             }
-            const res = await axios.get(`${publicRequest}/product/fetchProduct/${searchValue}`)
+            const res = await publicRequest.get(`/product/fetchProduct/${searchValue}`)
             setProduct(res.data)
         }catch(err){
             console.log(err)
