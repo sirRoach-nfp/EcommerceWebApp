@@ -5,6 +5,7 @@ import { popularProducts } from "../data"
 import { useState,useEffect } from "react"
 import axios from "axios"
 import { mobile, mobileM } from '../responsive';
+import { publicRequest } from "../requestMethod"
 
 const Container = styled.div`
     padding: 20px;
@@ -39,7 +40,7 @@ export default function Products({cat,filters,sort,searchValue,pointer}){
 
     const getProducts = async ()=>{
         try{
-            const res = await axios.get(cat ? `http://localhost:5000/api/product/fetchProducts?category=${cat}`: `http://localhost:5000/api/product/fetchProducts`)
+            const res = await axios.get(cat ? `${publicRequest}/product/fetchProducts?category=${cat}`: `${publicRequest}/product/fetchProducts`)
             console.log(res.data)
             setProduct(res.data)
         }catch(err){
@@ -51,11 +52,11 @@ export default function Products({cat,filters,sort,searchValue,pointer}){
     const reFetch = async ()=>{
         try{
             if(searchValue === "all"){
-                const res = await axios.get(`http://localhost:5000/api/product/fetchProducts`)
+                const res = await axios.get(`${publicRequest}/product/fetchProducts`)
                 setProduct(res.data)
 
             }
-            const res = await axios.get(`http://localhost:5000/api/product/fetchProduct/${searchValue}`)
+            const res = await axios.get(`${publicRequest}/product/fetchProduct/${searchValue}`)
             setProduct(res.data)
         }catch(err){
             console.log(err)
