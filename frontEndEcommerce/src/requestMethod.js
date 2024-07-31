@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:5000/api"
+//const BASE_URL = "http://localhost:5000/api"
+const BASE_URL = "https://ecommercewebapp-26m8.onrender.com/api";
 let TOKEN = "";
 try {
     const rootData = JSON.parse(localStorage.getItem("persist:root"));
